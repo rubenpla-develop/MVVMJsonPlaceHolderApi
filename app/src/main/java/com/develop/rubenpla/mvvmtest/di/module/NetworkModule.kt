@@ -39,7 +39,7 @@ object NetworkModule {
     @Provides
     @Reusable
     @JvmStatic
-    internal fun provideRetrofirInterface() : Retrofit {
+    internal fun provideRetrofitInterface() : Retrofit {
 
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
