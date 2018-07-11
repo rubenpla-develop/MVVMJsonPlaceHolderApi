@@ -1,5 +1,7 @@
 package com.develop.rubenpla.mvvmtest.ui.post
 
+import android.arch.lifecycle.MutableLiveData
+import android.view.View
 import com.develop.rubenpla.mvvmtest.base.BaseViewModel
 import com.develop.rubenpla.mvvmtest.network.PostApi
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,6 +19,8 @@ class PostListViewModel : BaseViewModel() {
     lateinit var postApi : PostApi
 
     private lateinit var subscription : Disposable
+
+    val loadingVisibility : MutableLiveData<Int> = MutableLiveData()
 
     init {
         loadPosts()
@@ -38,11 +42,11 @@ class PostListViewModel : BaseViewModel() {
     }
 
     private fun onRetrievePostListStart(){
-
+        loadingVisibility.value = View.VISIBLE
     }
 
     private fun onRetrievePostListFinish(){
-
+        loadingVisibility.value = View.GONE
     }
 
     private fun onRetrievePostListSuccess(){
@@ -51,6 +55,10 @@ class PostListViewModel : BaseViewModel() {
 
     private fun onRetrievePostListError(){
 
+    }
+
+    private fun getLoadingVisibility() : Int? {
+        return loadingVisibility.value
     }
 
 }
