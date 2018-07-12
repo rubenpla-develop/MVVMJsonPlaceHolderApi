@@ -15,7 +15,6 @@ class PostListViewModel : BaseViewModel() {
     /**
      *  We'll inject an instance of PostApi in order to get result from Api
      */
-
     @Inject
     lateinit var postApi : PostApi
 
