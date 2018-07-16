@@ -5,14 +5,16 @@ import android.view.View
 import com.develop.rubenpla.mvvmtest.R
 import com.develop.rubenpla.mvvmtest.base.BaseViewModel
 import com.develop.rubenpla.mvvmtest.model.Post
+import com.develop.rubenpla.mvvmtest.model.dao.PostDao
 import com.develop.rubenpla.mvvmtest.network.PostApi
 import com.develop.rubenpla.mvvmtest.ui.post.adapter.PostListAdapter
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class PostListViewModel : BaseViewModel() {
+class PostListViewModel(private val postDao: PostDao) : BaseViewModel() {
 
     /**
      *  We'll inject an instance of PostApi in order to get result from Api
@@ -33,9 +35,17 @@ class PostListViewModel : BaseViewModel() {
     }
 
     private fun loadPosts() {
-        subscription = postApi.getPosts()
+        subscription = Observable.fromCallable { postDao.getAllPosts }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .concatMap{ dbPostList -> if (dbPostList.isEmpty())
+                            postApi.getPosts().concatMap { postList ->
+                                postDao.insertAll(*postList.toTypedArray())
+                                Observable.just(postList)
+                            }
+                                else
+                                    Observable.just(dbPostList)
+                        }
                 .doOnSubscribe { onRetrievePostListStart() }
                 .doOnTerminate { onRetrievePostListFinish()}
                 .subscribe( { result -> onRetrievePostListSuccess(result) },
