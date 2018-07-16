@@ -42,7 +42,6 @@ class PostListAdapter : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
         fun bind(post: Post) {
             viewModel.bind(post)
             binding.viewModel = viewModel
-
         }
     }
 }

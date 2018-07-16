@@ -21,14 +21,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         /**
-         *  Setting binding layout & LayoutManager for RecyvlerView component
+         *  Setting binding layout & LayoutManager for RecyclerView component
          */
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.postList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
                 false)
 
         /**
-         * initializing viewModel and setting to binding viewmodel attribute
+         * Initializing viewModel and setting to binding ViewModel attribute
          */
         viewModel = ViewModelProviders.of(this).get(PostListViewModel::class.java)
 

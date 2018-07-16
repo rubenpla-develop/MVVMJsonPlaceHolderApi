@@ -4,7 +4,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import com.develop.rubenpla.mvvmtest.R
 import com.develop.rubenpla.mvvmtest.base.BaseViewModel
+import com.develop.rubenpla.mvvmtest.model.Post
 import com.develop.rubenpla.mvvmtest.network.PostApi
+import com.develop.rubenpla.mvvmtest.ui.post.adapter.PostListAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +22,8 @@ class PostListViewModel : BaseViewModel() {
 
     private lateinit var subscription : Disposable
 
+    val postListAdapter : PostListAdapter = PostListAdapter()
+
     val loadingVisibility : MutableLiveData<Int> = MutableLiveData()
     val errorMessage : MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { loadPosts() }
@@ -34,7 +38,7 @@ class PostListViewModel : BaseViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrievePostListStart() }
                 .doOnTerminate { onRetrievePostListFinish()}
-                .subscribe( { onRetrievePostListSuccess()},
+                .subscribe( { result -> onRetrievePostListSuccess(result) },
                         { onRetrievePostListError()})
     }
 
@@ -52,8 +56,8 @@ class PostListViewModel : BaseViewModel() {
         loadingVisibility.value = View.GONE
     }
 
-    private fun onRetrievePostListSuccess(){
-
+    private fun onRetrievePostListSuccess(result: List<Post>) {
+        postListAdapter.updatePostListData(result)
     }
 
     private fun onRetrievePostListError(){
