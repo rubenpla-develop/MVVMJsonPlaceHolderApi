@@ -48,8 +48,12 @@ dependencies {
     // Constraint Layout dependencies
     implementation "com.android.support.constraint:constraint-layout:1.1.2"
 
-    // LiveData & ViewModel dependencies
+    // LiveData & ViewModel dependencies (AAC)
     implementation"android.arch.lifecycle:extensions:$lifecycle_version"
+
+    // ROOM (AAC) dependencies
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
 
     // Data binding dependencies
     kapt "com.android.databinding:compiler:3.1.3"

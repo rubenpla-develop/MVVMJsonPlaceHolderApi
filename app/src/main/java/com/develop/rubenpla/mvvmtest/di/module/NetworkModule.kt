@@ -43,6 +43,17 @@ object NetworkModule {
     @JvmStatic
     internal fun provideRetrofitInterface() : Retrofit {
 
+        /**
+         * ERROR : SSl Exception, probably localized issue on Android Api 19
+         *
+         * 'https://www.google.es/search?q=HTTP+FAILED%3A+javax.net.ssl.SSLHandshakeException%3A+
+         * avax.net.ssl.SSLProtocolException+jsonplaceholder&rlz=1C1PRFI_esES802ES802&oq=HTTP+
+         * FAILED%3A+javax.net.ssl.SSLHandshakeException%3A+javax.net.ssl.SSLProtocolException
+         *
+         * useful resource ? : http://hostciti.net/faq/java/isklyuchenie-javax-net-ssl-
+         * sslhandshakeexception-handshake-failed-pri-zaprose-na-server.html
+         */
+
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())

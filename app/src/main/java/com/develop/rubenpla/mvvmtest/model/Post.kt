@@ -1,5 +1,8 @@
 package com.develop.rubenpla.mvvmtest.model
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+
 /**
  * Class which provides a model for post
  * @constructor Sets all properties of the post
@@ -9,4 +12,8 @@ package com.develop.rubenpla.mvvmtest.model
  * @property body the content of the post
  */
 
-data class Post(val userId : Int, val id : Int, val title : String, val body : String)
+@Entity
+data class Post(val userId : Int,
+                @field:PrimaryKey val id : Int,
+                val title : String,
+                val body : String)
