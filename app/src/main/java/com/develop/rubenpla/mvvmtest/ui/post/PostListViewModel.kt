@@ -36,8 +36,6 @@ class PostListViewModel(private val postDao: PostDao) : BaseViewModel() {
 
     private fun loadPosts() {
         subscription = Observable.fromCallable { postDao.getAllPosts }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .concatMap{ dbPostList -> if (dbPostList.isEmpty())
                             postApi.getPosts().concatMap { postList ->
                                 postDao.insertAll(*postList.toTypedArray())
@@ -46,6 +44,8 @@ class PostListViewModel(private val postDao: PostDao) : BaseViewModel() {
                                 else
                                     Observable.just(dbPostList)
                         }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrievePostListStart() }
                 .doOnTerminate { onRetrievePostListFinish()}
                 .subscribe( { result -> onRetrievePostListSuccess(result) },

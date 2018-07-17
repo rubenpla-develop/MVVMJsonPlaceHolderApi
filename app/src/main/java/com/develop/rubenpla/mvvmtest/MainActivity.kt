@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.develop.rubenpla.mvvmtest.databinding.ActivityMainBinding
+import com.develop.rubenpla.mvvmtest.di.ViewModelFactory
 import com.develop.rubenpla.mvvmtest.ui.post.PostListViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         /**
          * Initializing viewModel and setting to binding ViewModel attribute
          */
-        viewModel = ViewModelProviders.of(this).get(PostListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(this))
+                .get(PostListViewModel::class.java)
 
         /**
          * Handling potential errors
@@ -42,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             hideError()
         }
         })
-
 
         binding.viewModel = viewModel
     }
